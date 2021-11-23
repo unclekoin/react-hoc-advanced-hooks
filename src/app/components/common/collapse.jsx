@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Collapse as BsCollapse } from "bootstrap";
 import PropTypes from "prop-types";
 const CollapseWrapper = ({ children, title, name }) => {
-    const [display, setDisaplay] = useState(false);
+    const [display, setDisplay] = useState(false);
     const collapseRef = useRef();
     const toggleDisplay = () => {
-        setDisaplay((prevState) => !prevState);
+        setDisplay((prevState) => !prevState);
     };
     useEffect(() => {
         const newCollapse = new BsCollapse(collapseRef.current, {
@@ -13,6 +13,15 @@ const CollapseWrapper = ({ children, title, name }) => {
         });
         display ? newCollapse.show() : newCollapse.hide();
     }, [display]);
+
+    const Children = React.Children.map(children, (child, index) => {
+        const config = {
+            number: String(index)
+        };
+        return child.type.name === "Component"
+            ? React.cloneElement(child, config)
+            : child;
+    });
 
     return (
         <div className="card  my-2">
@@ -28,12 +37,13 @@ const CollapseWrapper = ({ children, title, name }) => {
                     ></i>
                 </div>
                 <div className="collapse" ref={collapseRef} id={name + title}>
-                    {children}
+                    {Children}
                 </div>
             </div>
         </div>
     );
 };
+
 CollapseWrapper.defaultProps = {
     title: "Информация"
 };
