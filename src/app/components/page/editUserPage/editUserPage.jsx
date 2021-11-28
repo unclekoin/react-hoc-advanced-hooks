@@ -21,7 +21,6 @@ const EditUserPage = () => {
     };
 
     const handleSubmit = (data) => {
-        console.log(data);
         const { profession } = data;
         api.users
             .update(userId, {
@@ -29,7 +28,6 @@ const EditUserPage = () => {
                 profession: getProfessionById(profession)
             })
             .then((data) => history.push(`/users/${data._id}`));
-        console.log(data);
     };
 
     useEffect(() => {
@@ -74,7 +72,7 @@ const EditUserPage = () => {
                             validatorConfig={validatorConfig}
                             defaultData={data}
                         >
-                            <TextField label="Имя" name="name" />
+                            <TextField label="Имя" name="name" autoFocus />
                             <TextField label="Электронная почта" name="email" />
                             <SelectField
                                 label="Выбери свою профессию"
